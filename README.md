@@ -31,7 +31,7 @@ See [tesla-examples/simple-example](https://github.com/otto-de/tesla-examples/tr
 (system/start
   (-> (system/base-system {})
       (assoc :my-page (new-page))
-      (serving-with-jetty/add-server :mypage)))
+      (serving-with-jetty/add-server :my-page)))
 ```
 See [tesla-examples/mongo-example](https://github.com/otto-de/tesla-examples/tree/master/mongo-example).
 
