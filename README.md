@@ -25,7 +25,15 @@ Add the server to the base-system before starting it. Pass in additional depende
   (system/start (serving-with-jetty/add-server (system/base-system {}) :my-page))
 ```
 
-See [tesla-examples/simple-example](https://github.com/otto-de/tesla-examples/tree/master/simple-example) for a usage example.
+See [tesla-examples/simple-example](https://github.com/otto-de/tesla-examples/tree/master/simple-example) for an example. The more elegant syntax with the ```->```-threading macro would look like this:
+
+```clojure
+(system/start
+  (-> (system/base-system {})
+      (assoc :my-page (new-page))
+      (serving-with-jetty/add-server :mypage)))
+```
+See [tesla-examples/mongo-example](https://github.com/otto-de/tesla-examples/tree/master/mongo-example).
 
 ## Compatibility
 Versions ```0.1.0``` and above of tesla-jetty are compatible with versions ```0.1.15``` and above of tesla-microservice.
