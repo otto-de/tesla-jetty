@@ -6,8 +6,8 @@
             :scm {:name "git"
                   :url  "https://github.com/otto-de/tesla-jetty"}
 
-            :dependencies [[org.clojure/clojure "1.6.0"]
-                           [ring/ring-jetty-adapter "1.3.2"]]
+            :dependencies [[org.clojure/clojure "1.7.0"]
+                           [ring/ring-jetty-adapter "1.4.0"]]
 
             :exclusions [org.clojure/clojure
                          org.slf4j/slf4j-nop
@@ -15,10 +15,10 @@
                          log4j
                          commons-logging/commons-logging]
 
-            :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.1.15"]
-                                                 [com.stuartsierra/component "0.2.3"]]}
+            :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.1.25"]
+                                                 [com.stuartsierra/component "0.3.1"]]}
                        :dev      {:dependencies [[javax.servlet/servlet-api "2.5"]
-                                                 [org.slf4j/slf4j-api "1.7.12"]
+                                                 [org.slf4j/slf4j-api "1.7.13"]
                                                  [ch.qos.logback/logback-core "1.1.3"]
                                                  [ch.qos.logback/logback-classic "1.1.3"]
                                                  [ring-mock "0.1.5"]]
