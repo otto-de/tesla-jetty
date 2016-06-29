@@ -4,6 +4,11 @@
             [de.otto.tesla.stateful.handler :as handler]
             [clojure.tools.logging :as log]))
 
+(defn jetty-options [config]
+  (if-let [jetty-options (or (get config :jetty-options) (get-in config [:config :jetty-options]))]
+    jetty-options
+    {}))
+
 (defn port [config]
   (if-let [from-config (get-in config [:config :server-port])]
     (Integer. from-config)
@@ -14,9 +19,9 @@
   (start [self]
     (log/info "-> starting server")
     (let [all-routes (handler/handler handler)
-          server (jetty/run-jetty all-routes {:port (port config) :join? false})]
+          options (jetty-options (:config self))
+          server (jetty/run-jetty all-routes (merge {:port (port config) :join? false} options))]
       (assoc self :jetty server)))
-
   (stop [self]
     (log/info "<- stopping server")
     (if-let [server (:jetty self)]
