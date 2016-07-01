@@ -37,3 +37,18 @@
               started (system/start system-with-server)
               _ (system/stop started)]
           (is (= #{:config :handler :jetty :dummy-page} (into #{} (keys (:server started))))))))))
+
+(deftest use-configurator
+  (testing "using the configurator from config"
+    (let [jetty-config (atom nil)]
+      (with-redefs [jetty/run-jetty (fn [_ config]
+                                      (reset! jetty-config config) nil)]
+        (let [my-configurator identity
+              system-with-server (with-jetty/add-server (system/base-system {:jetty-options {:configurator my-configurator}}))
+              started (system/start system-with-server)
+              stop (system/stop started)]
+          (is (= (:configurator @jetty-config) my-configurator))
+          ))))
+
+  (testing "configurator should be extracted from config"
+    (is (= (with-jetty/jetty-options {:jetty-options {:configurator "test"}}) {:configurator "test"}))))
