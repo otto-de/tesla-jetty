@@ -3,7 +3,7 @@
 This library provides a component, that adds an embedded jetty server to [tesla-microservice](https://github.com/otto-de/tesla-mivroservice). 
 This componenent has been extracted from tesla-microservice in order to allow for operation with other, especially non-blocking, server implementations as well as headless operation.
 
-`[de.otto/tesla-jetty "0.1.1"]`
+`[de.otto/tesla-jetty "0.1.2"]`
 
 [![Build Status](https://travis-ci.org/otto-de/tesla-jetty.svg)](https://travis-ci.org/otto-de/tesla-jetty)
 [![Dependencies Status](http://jarkeeper.com/otto-de/tesla-jetty/status.svg)](http://jarkeeper.com/otto-de/tesla-jetty)
