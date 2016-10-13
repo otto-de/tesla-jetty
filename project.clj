@@ -8,9 +8,7 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring/ring-jetty-adapter "1.5.0"]]
-  :lein-release {:scm :git
-                 :deploy-via :shell
-                 :shell ["lein" "deploy" "clojars"]}
+  :lein-release {:deploy-via :clojars}
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop
                org.slf4j/slf4j-log4j12
