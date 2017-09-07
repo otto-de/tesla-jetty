@@ -2,7 +2,11 @@
   (:require [com.stuartsierra.component :as c]
             [ring.adapter.jetty :as jetty]
             [de.otto.tesla.stateful.handler :as handler]
-            [clojure.tools.logging :as log]))
+            [clojure.tools.logging :as log]
+            [de.otto.goo.goo :as goo])
+  (:import (org.eclipse.jetty.server.handler StatisticsHandler HandlerCollection)
+           (io.prometheus.client.jetty JettyStatisticsCollector)
+           (org.eclipse.jetty.server Server)))
 
 (defn jetty-options [config]
   (if-let [jetty-options (or (get config :jetty-options) (get-in config [:config :jetty-options]))]
@@ -14,13 +18,19 @@
     (Integer. from-config)
     8080))
 
+(defn instrument-jetty [^Server server]
+  (let [ statistics-handler      (doto (StatisticsHandler.) (.setServer server))
+        ^HandlerCollection handler-coll (doto (HandlerCollection.) (.addHandler (.getHandler server))(.addHandler statistics-handler) )]
+    (.setHandler server handler-coll)
+    (goo/register! (JettyStatisticsCollector. statistics-handler))))
+
 (defrecord JettyServer [config handler]
   c/Lifecycle
   (start [self]
     (log/info "-> starting server")
     (let [all-routes (handler/handler handler)
-          options (jetty-options (:config self))
-          server (jetty/run-jetty all-routes (merge {:port (port config) :join? false} options))]
+          options    (jetty-options (:config self))
+          server     (jetty/run-jetty all-routes (merge {:port (port config) :join? false :configurator instrument-jetty} options))]
       (assoc self :jetty server)))
   (stop [self]
     (log/info "<- stopping server")
