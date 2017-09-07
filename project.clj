@@ -15,12 +15,12 @@
                log4j
                commons-logging/commons-logging]
 
-  :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.3"]
+  :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.10"]
                                        [com.stuartsierra/component "0.3.2"]]}
              :dev      {:dependencies [[javax.servlet/servlet-api "2.5"]
                                        [org.slf4j/slf4j-api "1.7.25"]
                                        [ch.qos.logback/logback-core "1.2.3"]
                                        [ch.qos.logback/logback-classic "1.2.3"]
                                        [ring-mock "0.1.5"]]
-                        :plugins      [[lein-ancient "0.6.10"][lein-release/lein-release "1.0.9"]]}}
+                        :plugins      [[lein-release/lein-release "1.0.9"]]}}
   :test-paths ["test" "test-resources"])
