@@ -6,7 +6,8 @@
             [de.otto.goo.goo :as goo])
   (:import (org.eclipse.jetty.server.handler StatisticsHandler HandlerCollection)
            (io.prometheus.client.jetty JettyStatisticsCollector)
-           (org.eclipse.jetty.server Server)))
+           (org.eclipse.jetty.server Server)
+           (de.otto.tesla.jetty PrometheusHandler)))
 
 (defn jetty-options [config]
   (if-let [jetty-options (or (get config :jetty-options) (get-in config [:config :jetty-options]))]
@@ -19,8 +20,12 @@
     8080))
 
 (defn instrument-jetty [^Server server]
-  (let [ statistics-handler      (doto (StatisticsHandler.) (.setServer server))
-        ^HandlerCollection handler-coll (doto (HandlerCollection.) (.addHandler (.getHandler server))(.addHandler statistics-handler) )]
+  (let [statistics-handler              (doto (StatisticsHandler.) (.setServer server))
+        prometheus-handler              (doto (PrometheusHandler. (.raw (goo/snapshot))) (.setServer server))
+        ^HandlerCollection handler-coll (doto (HandlerCollection.)
+                                          (.addHandler (.getHandler server))
+                                          (.addHandler statistics-handler)
+                                          (.addHandler prometheus-handler))]
     (.setHandler server handler-coll)
     (goo/register! (JettyStatisticsCollector. statistics-handler))))
 

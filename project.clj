@@ -15,6 +15,8 @@
                org.slf4j/slf4j-log4j12
                log4j
                commons-logging/commons-logging]
+  :source-paths      ["src/clojure"]
+  :java-source-paths ["src/java"]
 
   :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.10"]
                                        [com.stuartsierra/component "0.3.2"]]}
