@@ -13,8 +13,7 @@
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop
                org.slf4j/slf4j-log4j12
-               log4j
-               commons-logging/commons-logging]
+               log4j]
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
 
@@ -23,6 +22,7 @@
              :dev      {:dependencies [[org.slf4j/slf4j-api "1.7.25"]
                                        [ch.qos.logback/logback-core "1.2.3"]
                                        [ch.qos.logback/logback-classic "1.2.3"]
-                                       [ring-mock "0.1.5"]]
+                                       [ring-mock "0.1.5"]
+                                       [clj-http "3.7.0"]]
                         :plugins      [[lein-release/lein-release "1.0.9"]]}}
   :test-paths ["test" "test-resources"])

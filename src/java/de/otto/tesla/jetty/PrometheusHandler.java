@@ -13,24 +13,17 @@ import java.io.IOException;
 import static java.lang.String.valueOf;
 
 public class PrometheusHandler extends HandlerWrapper {
-    private final CollectorRegistry registry;
-    private Histogram httpHistogram;
+    private static Histogram httpHistogram;
 
-
-    public PrometheusHandler(CollectorRegistry registry) {
-        this.registry = registry;
-    }
-
-    @Override
-    protected void doStart() throws Exception {
+    static {
         Histogram.Builder builder = new Histogram.Builder();
-        this.httpHistogram = builder
+        httpHistogram = builder
                 .name("jetty_http_duration_in_s").
                         buckets(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1).
                         help("Request latencies as perceived by jetty.")
                 .labelNames("method", "rc")
                 .create();
-        httpHistogram.register(registry);
+        httpHistogram.register();
     }
 
     @Override
