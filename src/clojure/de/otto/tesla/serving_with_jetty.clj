@@ -23,7 +23,7 @@
 
 (defn instrument-jetty [^Server server]
   (let [statistics-handler              (doto (StatisticsHandler.) (.setServer server))
-        prometheus-handler              (doto (PrometheusHandler.) (.setServer server))
+        prometheus-handler              (doto (PrometheusHandler. (.raw (goo/snapshot))) (.setServer server))
         ^HandlerCollection handler-coll (doto (HandlerCollection.)
                                           (.addHandler (.getHandler server))
                                           (.addHandler statistics-handler)
@@ -37,8 +37,8 @@
     (log/info "-> starting server")
     (let [handler-404 (comp/ANY "*" _request (resp/status (resp/response "") 404))
           all-routes  (comp/routes (handler/handler handler) handler-404)
-          options    (jetty-options (:config self))
-          server     (jetty/run-jetty all-routes (merge {:port (port config) :join? false :configurator instrument-jetty} options))]
+          options     (jetty-options (:config self))
+          server      (jetty/run-jetty all-routes (merge {:port (port config) :join? false :configurator instrument-jetty} options))]
       (assoc self :jetty server)))
   (stop [self]
     (log/info "<- stopping server")
