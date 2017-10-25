@@ -12,12 +12,12 @@ import java.io.IOException;
 
 import static java.lang.String.valueOf;
 
-public class PrometheusHandler extends HandlerWrapper {
+public class LatencyHistogramHandler extends HandlerWrapper {
     private final CollectorRegistry registry;
     private Histogram httpHistogram;
 
 
-    public PrometheusHandler(CollectorRegistry registry) {
+    public LatencyHistogramHandler(CollectorRegistry registry) {
         this.registry = registry;
     }
 
