@@ -14,23 +14,23 @@
       (with-redefs [jetty/run-jetty (fn [_ _]
                                       (reset! was-started true)
                                       nil)]
-        (goo/clear-default-registry!)
+
         (tutils/with-started [_ (system/start (with-jetty/add-server (system/base-system {})))]
                              (is (= true @was-started)))))))
 
 (deftest integration-test
   (let [port 8081]
     (testing "it returns 404 for unknown paths"
-      (goo/clear-default-registry!)
+
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port}))]
                            (is (= 404
                                   (:status (client/get (format "http://localhost:%d" port) {:throw-exceptions false}))))))
     (testing "it returns the response of matching routes"
-      (goo/clear-default-registry!)
+
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
                            (is (= 200 (:status (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false}))))))
     (testing "requests are recorded in the histogram"
-      (goo/clear-default-registry!)
+
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
                            (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false})
                            (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "http_duration_in_s_bucket"  (into-array String ["path", "method", "rc", "le"]) (into-array ["/status-test" , ":get", "200", "0.001"])))))))))

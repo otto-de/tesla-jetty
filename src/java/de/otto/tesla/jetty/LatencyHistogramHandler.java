@@ -4,6 +4,8 @@ import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Histogram;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.HandlerWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ public class LatencyHistogramHandler extends HandlerWrapper {
     private final CollectorRegistry registry;
     private Histogram httpHistogram;
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(LatencyHistogramHandler.class);
 
     public LatencyHistogramHandler(CollectorRegistry registry) {
         this.registry = registry;
@@ -30,7 +33,12 @@ public class LatencyHistogramHandler extends HandlerWrapper {
                         help("Request latencies as perceived by jetty.")
                 .labelNames("method", "rc")
                 .create();
-        httpHistogram.register(registry);
+
+        try {
+            registry.register(httpHistogram);
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("jetty_http_duration_in_s histogram was already registered.", e);
+        }
     }
 
     @Override
