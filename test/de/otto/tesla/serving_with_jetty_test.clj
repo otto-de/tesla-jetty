@@ -7,6 +7,12 @@
             [clj-http.client :as client]
             [de.otto.goo.goo :as goo]))
 
+(defn clear-registry [f]
+  (goo/clear-default-registry!)
+  (f))
+
+(use-fixtures :each clear-registry)
+
 (deftest add-server-test
   (testing "it adds the jetty component to a system"
     (let [was-started (atom false)]
