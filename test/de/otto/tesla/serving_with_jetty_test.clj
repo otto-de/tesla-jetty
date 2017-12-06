@@ -5,7 +5,6 @@
             [de.otto.tesla.system :as system]
             [de.otto.tesla.util.test-utils :as tutils]
             [clj-http.client :as client]
-            [de.otto.tesla.stateful.handler :as handlers]
             [de.otto.goo.goo :as goo]))
 
 (deftest add-server-test
@@ -30,10 +29,10 @@
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
                            (is (= 200 (:status (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false}))))))
     (testing "requests are recorded in the histogram"
-
+      (goo/clear-default-registry!)
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
                            (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false})
-                           (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "http_duration_in_s_bucket"  (into-array String ["path", "method", "rc", "le"]) (into-array ["/status-test" , ":get", "200", "0.001"])))))))))
+                           (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "http_duration_in_s_bucket"  (into-array String ["path", "method", "rc", "le"]) (into-array ["/status-test" , ":get", "200", "+Inf"])))))))))
 
 (deftest port-test
   (testing "uses the configured port"
@@ -63,8 +62,8 @@
                                       (reset! jetty-config config) nil)]
         (let [my-configurator    identity
               system-with-server (with-jetty/add-server (system/base-system {:jetty-options {:configurator my-configurator}}))
-              started            (system/start system-with-server)
-              stop               (system/stop started)]
+              started            (system/start system-with-server)]
+          (system/stop started)
           (is (= (:configurator @jetty-config) my-configurator))))))
 
   (testing "configurator should be extracted from config"

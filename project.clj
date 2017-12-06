@@ -7,8 +7,11 @@
         :url  "https://github.com/otto-de/tesla-jetty"}
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [ring/ring-jetty-adapter "1.6.2"]
-                 [io.prometheus/simpleclient_jetty "0.1.0"]]
+                 [ring/ring-jetty-adapter "1.6.3"]
+                 [io.prometheus/simpleclient_jetty "0.1.0"]
+                 ;Overwrite outdated,transitive dependencies
+                 [org.eclipse.jetty/jetty-server "9.4.8.v20171121"]
+                 [org.eclipse.jetty/jetty-servlet "9.4.8.v20171121"]]
   :lein-release {:deploy-via :clojars}
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop
@@ -17,7 +20,7 @@
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
 
-  :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.12"]
+  :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.16"]
                                        [com.stuartsierra/component "0.3.2"]]}
              :dev      {:dependencies [[org.slf4j/slf4j-api "1.7.25"]
                                        [ch.qos.logback/logback-core "1.2.3"]
