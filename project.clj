@@ -1,4 +1,4 @@
-(defproject de.otto/tesla-jetty "0.2.5-SNAPSHOT"
+(defproject de.otto/tesla-jetty "0.2.5"
   :description "basic microservice."
   :url "https://github.com/otto-de/tesla-jetty"
   :license {:name "Apache License 2.0"
