@@ -38,10 +38,10 @@
           options     (jetty-options (:config self))
           server      (jetty/run-jetty all-routes (merge {:port (port config) :join? false :configurator instrument-jetty} options))]
       (assoc self :jetty server)))
-  (stop [self]
+  (stop [{jetty :jetty :as self}]
     (log/info "<- stopping server")
-    (if-let [server (:jetty self)]
-      (.stop server))
+    (when jetty
+      (.stop jetty))
     self))
 
 (defn new-server [] (map->JettyServer {}))
