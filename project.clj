@@ -6,7 +6,7 @@
   :scm {:name "git"
         :url  "https://github.com/otto-de/tesla-jetty"}
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.10.2"]
                  [ring/ring-jetty-adapter "1.6.3"]
                  [io.prometheus/simpleclient_jetty "0.1.0"]
                  ;Overwrite outdated,transitive dependencies
