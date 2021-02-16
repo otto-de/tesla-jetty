@@ -19,7 +19,7 @@
                log4j]
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
-
+  :javac-options ["-source" "8" "-target" "8"]
   :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.16"]
                                        [com.stuartsierra/component "0.3.2"]]}
              :dev      {:dependencies [[org.slf4j/slf4j-api "1.7.25"]
