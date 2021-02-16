@@ -36,7 +36,9 @@
     (let [handler-404 (comp/ANY "*" _request (resp/status (resp/response "") 404))
           all-routes  (comp/routes (handler/handler handler) handler-404)
           options     (jetty-options (:config self))
+          _           (System/gc)
           server      (jetty/run-jetty all-routes (merge {:port (port config) :join? false :configurator instrument-jetty} options))]
+      (log/info "-> server started")
       (assoc self :jetty server)))
   (stop [{jetty :jetty :as self}]
     (log/info "<- stopping server")
