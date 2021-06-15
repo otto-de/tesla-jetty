@@ -18,10 +18,10 @@
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options ["-source" "8" "-target" "8"]
-  :profiles {:provided {:dependencies [
+  :profiles {:provided {:dependencies [[org.slf4j/slf4j-api "1.7.30"]
                                        [de.otto/tesla-microservice "0.17.1"]
                                        [com.stuartsierra/component "1.0.0"]]}
-             :dev      {:dependencies [[org.slf4j/slf4j-api "1.7.30"]
+             :dev      {:dependencies [
                                        [ch.qos.logback/logback-core "1.2.3"]
                                        [ch.qos.logback/logback-classic "1.2.3"]
                                        [ring-mock "0.1.5"]
