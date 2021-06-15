@@ -38,7 +38,7 @@
       (goo/clear-default-registry!)
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
                            (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false})
-                           (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "http_duration_in_s_bucket"  (into-array String ["path", "method", "rc", "le"]) (into-array ["/status-test" , ":get", "200", "+Inf"])))))))))
+                           (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "jetty_http_duration_in_s_bucket"  (into-array String ["method", "rc", "le"]) (into-array ["GET" , "200", "+Inf"])))))))))
 
 (deftest port-test
   (testing "uses the configured port"
@@ -52,13 +52,13 @@
   (with-redefs [jetty/run-jetty (fn [_ _] nil)]
     (testing "it starts up the server with no extra dependencies"
       (let [system-with-server (with-jetty/add-server (system/base-system {}))]
-        (tutils/with-started [started (system/start system-with-server)]
+        (tutils/with-started [started system-with-server]
                              (is (= #{:config :handler :jetty} (into #{} (keys (:server started))))))))
 
     (testing "it starts up the server with extra dependencies"
       (let [with-page          (assoc (system/base-system {}) :dummy-page (Object.))
             system-with-server (with-jetty/add-server with-page :dummy-page)]
-        (tutils/with-started [started (system/start system-with-server)]
+        (tutils/with-started [started system-with-server]
                              (is (= #{:config :handler :jetty :dummy-page} (into #{} (keys (:server started))))))))))
 
 (deftest use-configurator
