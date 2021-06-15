@@ -6,12 +6,10 @@
   :scm {:name "git"
         :url  "https://github.com/otto-de/tesla-jetty"}
 
-  :dependencies [[org.clojure/clojure "1.10.2"]
-                 [ring/ring-jetty-adapter "1.6.3"]
-                 [io.prometheus/simpleclient_jetty "0.1.0"]
-                 ;Overwrite outdated,transitive dependencies
-                 [org.eclipse.jetty/jetty-server "9.4.8.v20171121"]
-                 [org.eclipse.jetty/jetty-servlet "9.4.8.v20171121"]]
+  :dependencies [
+                 [org.clojure/clojure "1.10.3"]
+                 [ring/ring-jetty-adapter "1.9.3"]
+                 [io.prometheus/simpleclient_jetty "0.11.0"]]
   :lein-release {:deploy-via :clojars}
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop
@@ -20,12 +18,13 @@
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options ["-source" "8" "-target" "8"]
-  :profiles {:provided {:dependencies [[de.otto/tesla-microservice "0.11.16"]
-                                       [com.stuartsierra/component "0.3.2"]]}
-             :dev      {:dependencies [[org.slf4j/slf4j-api "1.7.25"]
+  :profiles {:provided {:dependencies [
+                                       [de.otto/tesla-microservice "0.17.1"]
+                                       [com.stuartsierra/component "1.0.0"]]}
+             :dev      {:dependencies [[org.slf4j/slf4j-api "1.7.30"]
                                        [ch.qos.logback/logback-core "1.2.3"]
                                        [ch.qos.logback/logback-classic "1.2.3"]
                                        [ring-mock "0.1.5"]
-                                       [clj-http "3.7.0"]]
+                                       [clj-http "3.12.2"]]
                         :plugins      [[lein-release/lein-release "1.0.9"]]}}
   :test-paths ["test" "test-resources"])
