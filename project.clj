@@ -8,8 +8,8 @@
 
   :dependencies [
                  [org.clojure/clojure "1.10.3"]
-                 [ring/ring-jetty-adapter "1.9.3"]
-                 [io.prometheus/simpleclient_jetty "0.11.0"]]
+                 [ring/ring-jetty-adapter "1.9.6"]
+                 [io.prometheus/simpleclient_jetty "0.16.0"]]
   :lein-release {:deploy-via :clojars}
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop
@@ -18,13 +18,13 @@
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
   :javac-options ["-source" "8" "-target" "8"]
-  :profiles {:provided {:dependencies [[org.slf4j/slf4j-api "1.7.30"]
-                                       [de.otto/tesla-microservice "0.17.1"]
-                                       [com.stuartsierra/component "1.0.0"]]}
+  :profiles {:provided {:dependencies [[org.slf4j/slf4j-api "2.0.6"]
+                                       [de.otto/tesla-microservice "0.17.4"]
+                                       [com.stuartsierra/component "1.1.0"]]}
              :dev      {:dependencies [
-                                       [ch.qos.logback/logback-core "1.2.3"]
-                                       [ch.qos.logback/logback-classic "1.2.3"]
+                                       [ch.qos.logback/logback-core "1.4.5"]
+                                       [ch.qos.logback/logback-classic "1.4.5"]
                                        [ring-mock "0.1.5"]
-                                       [clj-http "3.12.2"]]
+                                       [clj-http "3.12.3"]]
                         :plugins      [[lein-release/lein-release "1.0.9"]]}}
   :test-paths ["test" "test-resources"])
