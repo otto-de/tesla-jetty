@@ -1,4 +1,4 @@
-(defproject de.otto/tesla-jetty "0.2.12-SNAPSHOT"
+(defproject de.otto/tesla-jetty "0.3.0-SNAPSHOT"
   :description "basic microservice."
   :url "https://github.com/otto-de/tesla-jetty"
   :license {:name "Apache License 2.0"
@@ -6,10 +6,9 @@
   :scm {:name "git"
         :url  "https://github.com/otto-de/tesla-jetty"}
 
-  :dependencies [
-                 [org.clojure/clojure "1.10.3"]
-                 [ring/ring-jetty-adapter "1.9.6"]
-                 [io.prometheus/simpleclient_jetty "0.16.0"]]
+  :dependencies [[org.clojure/clojure "1.11.1"]
+                 [info.sunng/ring-jetty9-adapter "0.30.3"]
+                 [info.sunng/ring-jetty9-adapter-http3 "0.4.3"]]
   :lein-release {:deploy-via :clojars}
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop

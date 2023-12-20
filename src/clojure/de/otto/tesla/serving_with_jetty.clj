@@ -1,15 +1,14 @@
 (ns de.otto.tesla.serving-with-jetty
   (:require [com.stuartsierra.component :as c]
             [compojure.core :as comp]
-            [ring.adapter.jetty :as jetty]
+            [ring.adapter.jetty9 :as jetty]
             [de.otto.tesla.stateful.handler :as handler]
             [clojure.tools.logging :as log]
             [de.otto.goo.goo :as goo]
             [ring.util.response :as resp])
   (:import (org.eclipse.jetty.server.handler StatisticsHandler)
-           (io.prometheus.client.jetty JettyStatisticsCollector)
            (org.eclipse.jetty.server Server)
-           (de.otto.tesla.jetty LatencyHistogramHandler)))
+           (de.otto.tesla.jetty JettyStatisticsCollector)))
 
 (defn jetty-options [config]
   (if-let [jetty-options (or (get config :jetty-options) (get-in config [:config :jetty-options]))]
@@ -22,11 +21,9 @@
     8080))
 
 (defn instrument-jetty [^Server server]
-  (let [prometheus-wrapper              (LatencyHistogramHandler. (.raw (goo/snapshot)))
-        statistics-handler              (StatisticsHandler.)]
-    (.setHandler statistics-handler prometheus-wrapper)
-    (.setHandler prometheus-wrapper (.getHandler server))
-    (.setHandler server prometheus-wrapper)
+  (let [statistics-handler (StatisticsHandler. (.getHandler server))]
+    (.setHandler statistics-handler (.getHandler server))
+    (.setHandler server statistics-handler)
     (goo/register! (JettyStatisticsCollector. statistics-handler))))
 
 (defrecord JettyServer [config handler]

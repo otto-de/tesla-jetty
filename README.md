@@ -38,6 +38,7 @@ See [tesla-examples/mongo-example](https://github.com/otto-de/tesla-examples/tre
 
 ## Compatibility
 Versions ```0.1.0``` and above of tesla-jetty are compatible with versions ```0.1.15``` and above of tesla-microservice.
+Versions ```0.3.0``` and above switched to jetty-12, but should be compatible with versions ```0.17.5``` and above of tesla-microservice
 
 ## License
 Apache License

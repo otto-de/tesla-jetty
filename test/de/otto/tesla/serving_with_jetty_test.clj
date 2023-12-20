@@ -1,6 +1,6 @@
 (ns de.otto.tesla.serving-with-jetty-test
   (:require [clojure.test :refer :all]
-            [ring.adapter.jetty :as jetty]
+            [ring.adapter.jetty9 :as jetty]
             [de.otto.tesla.serving-with-jetty :as with-jetty]
             [de.otto.tesla.system :as system]
             [de.otto.tesla.util.test-utils :as tutils]
@@ -26,19 +26,20 @@
 (deftest integration-test
   (let [port 8081]
     (testing "it returns 404 for unknown paths"
-
+      (goo/clear-default-registry!)
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port}))]
                            (is (= 404
                                   (:status (client/get (format "http://localhost:%d" port) {:throw-exceptions false}))))))
     (testing "it returns the response of matching routes"
-
+      (goo/clear-default-registry!)
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
                            (is (= 200 (:status (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false}))))))
     (testing "requests are recorded in the histogram"
       (goo/clear-default-registry!)
       (tutils/with-started [_ (with-jetty/add-server (system/base-system {:server-port port :status-url "/status-test"}))]
-                           (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false})
-                           (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "jetty_http_duration_in_s_bucket"  (into-array String ["method", "rc", "le"]) (into-array ["GET" , "200", "+Inf"])))))))))
+                           (let [resp (client/get (format "http://localhost:%d/status-test" port) {:throw-exceptions false})]
+                             (is (= 200 (:status resp)))
+                             (is (= 1.0 (-> (goo/snapshot) (.raw) (.getSampleValue "http_duration_in_s_bucket" (into-array String ["path", "method", "rc","useragent", "le"]) (into-array [ "/status-test" ":get", "200", "Apache-HttpClient/4.5.13 (Java/18.0.2.1)", "+Inf"]))))))))))
 
 (deftest port-test
   (testing "uses the configured port"
