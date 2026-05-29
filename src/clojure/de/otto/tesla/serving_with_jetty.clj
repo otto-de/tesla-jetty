@@ -1,7 +1,7 @@
 (ns de.otto.tesla.serving-with-jetty
   (:require [com.stuartsierra.component :as c]
             [compojure.core :as comp]
-            [ring.adapter.jetty9 :as jetty]
+            [ring.adapter.jetty :as jetty]
             [de.otto.tesla.stateful.handler :as handler]
             [clojure.tools.logging :as log]
             [de.otto.goo.goo :as goo]

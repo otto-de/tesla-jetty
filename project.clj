@@ -1,4 +1,4 @@
-(defproject de.otto/tesla-jetty "0.3.1-SNAPSHOT"
+(defproject de.otto/tesla-jetty "0.4.0-SNAPSHOT"
   :description "basic microservice."
   :url "https://github.com/otto-de/tesla-jetty"
   :license {:name "Apache License 2.0"
@@ -6,9 +6,8 @@
   :scm {:name "git"
         :url  "https://github.com/otto-de/tesla-jetty"}
 
-  :dependencies [[org.clojure/clojure "1.11.1"]
-                 [info.sunng/ring-jetty9-adapter "0.30.3"]
-                 [info.sunng/ring-jetty9-adapter-http3 "0.4.3"]]
+  :dependencies [[org.clojure/clojure "1.12.5"]
+                 [ring/ring-jetty-adapter "1.15.4"]]
   :lein-release {:deploy-via :clojars}
   :exclusions [org.clojure/clojure
                org.slf4j/slf4j-nop
@@ -16,7 +15,7 @@
                log4j]
   :source-paths      ["src/clojure"]
   :java-source-paths ["src/java"]
-  :javac-options ["-source" "8" "-target" "8"]
+  :javac-options ["-source" "21" "-target" "21"]
   :profiles {:provided {:dependencies [[org.slf4j/slf4j-api "2.0.6"]
                                        [de.otto/tesla-microservice "0.17.4"]
                                        [com.stuartsierra/component "1.1.0"]]}
